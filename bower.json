@@ -1,0 +1,24 @@
+{
+  "name": "nco-pocket",
+  "version": "0.0.0",
+  "homepage": "https://github.com/ragg-/nco-pocket",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "authors": [
+    "Ragg"
+  ],
+  "dependencies": {
+    "es6-promise": "~3.0.2",
+    "es6-collections": "^0.5.6",
+    "fetch": "^1.0.0"
+  }
+}

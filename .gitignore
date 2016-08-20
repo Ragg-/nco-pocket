@@ -1,0 +1,10 @@
+.DS_Store
+
+tmp/
+server/cache/
+server/config.js
+
+node_modules/
+bower_components/
+
+!.gitkeep

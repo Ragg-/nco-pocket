@@ -1,0 +1,98 @@
+import React from 'react';
+import classname from "classname";
+
+import Actions from "../const/Actions";
+import Dispatcher from "../app/dispatcher";
+
+export default class ShellView extends React.Component
+{
+    static propTypes = {
+        nsenConfig: React.PropTypes.shape({
+            defaultChannel: React.PropTypes.string,
+        }),
+    };
+
+    constructor(props = {})
+    {
+        super(props);
+        this.state = {show: false};
+
+        Dispatcher.on(Actions.NCO_PREFERENCE_OPEN, _ => this.setState({'show': true}));
+        Dispatcher.on(Actions.NCO_PREFERENCE_CLOSE, _ => this.setState({'show': false}));
+    }
+
+    componentWillUnmount()
+    {
+        console.log("ｱｯ!!!");
+    }
+
+    savePreference(e)
+    {
+        e.preventDefault();
+        e.stopPropagation();
+
+        Dispatcher.dispatch(Actions.NCO_SAVE_PREFERENCE, {playerEnabled: this.refs.playerEnabled.checked});
+        this.setState({'show': false});
+    }
+
+    render()
+    {
+        return (
+            <div id="nco-preference">
+                <div className={classname("NcoPref", {show: this.state.show})}>
+                    <div className="NcoPref_backface">
+                        <form onSubmit={e => this.savePreference(e)} className="NcoPref_modal">
+                            <h1>設定</h1>
+
+                            <div className="NcoPref_section">
+                                <h2 className="NcoPref_section_header">プレイヤー</h2>
+                                <div className="NcoPref_form_group">
+                                    <label htmlFor="pref-enable-player" className="NcoPref_form_label">Nsenプレイヤーを有効</label>
+                                    <input id="pref-enable-player" type="checkbox" ref="playerEnabled" className="NcoPref_form_input"/>
+                                </div>
+
+                                <div className="NcoPref_form_group">
+                                    <label htmlFor="pref-player-volume" className="NcoPref_form_label">プレイヤー音量</label>
+                                    <input id="pref-player-volume" type="range" name="nco.services.player.volume" min="0" max="1" step="0.01" className="NcoPref_form_input"/>
+                                    <span data-valueof="nco.services.player.volume" className="NcoPref_form_value"></span>
+                                    <span className="NcoPref_form_anotate">iPhoneでは無視されます。</span>
+                                </div>
+                            </div>
+
+                            <div className="NcoPref_section NcoPref_section-collapse">
+                                <h2 className="NcoPref_section_header">連絡先</h2>
+                                <dl className="NcoPref_address">
+                                    <dt>リポジトリ（配布元）</dt>
+                                    <dd><a href="https://github.com/ragg-/nco">GitHub (ragg-/nco)</a></dd>
+
+                                    <dt>制作（連絡先）</dt>
+                                    <dd><a href="http://twitter.com/_ragg_">@_ragg_</a></dd>
+                                </dl>
+                            </div>
+
+                            <div className="NcoPref_section NcoPref_section-collapse">
+                                <h2 className="NcoPref_section_header">オープンソース ライセンス</h2>
+                                <ul className="NcoPref_licenses">
+                                    <li><a href="https://github.com/babel/babel/blob/master/LICENSE">Babel</a></li>
+                                    <li><a href="https://github.com/atom/event-kit/blob/master/LICENSE.md">event-kit</a></li>
+                                    <li><a href="https://github.com/Ragg-/node-nicovideo-api/blob/dev/LICENSE">node-nicovideo-api</a></li>
+                                    <li><a href="https://github.com/request/request-promise/blob/master/LICENSE">request-promise</a></li>
+                                    <li><a href="https://github.com/bcoe/yargs/blob/master/LICENSE">yargs</a></li>
+                                    <li><a href="https://jquery.org/license/">jQuery</a></li>
+                                    <li><a href="https://lodash.com/license">lodash</a></li>
+                                    <li><a href="https://github.com/stevenbenner/jquery-powertip/blob/master/LICENSE.txt">PowerTip</a></li>
+                                    <li><a href="https://mplus-fonts.osdn.jp/mplus-outline-fonts/#license">M+ OUTLINE FONTS</a></li>
+                                </ul>
+                            </div>
+
+                            <div className="NcoPref_modal_footer">
+                                <button className="NcoPref_form_cancel" type="button">キャンセル</button>
+                                <button className="NcoPref_form_submit">保存</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
