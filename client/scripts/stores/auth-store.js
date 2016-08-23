@@ -8,17 +8,17 @@ class AuthStore extends ReduceStore
 {
     getInitialState()
     {
-        return new Immutable.Record({
+        return Immutable.Record({
             logged: false,
             failedReason: null,
-        });
+        })();
     }
 
     reduce(state, action)
     {
-        switch (action.type) {
+        switch (action.actionType) {
         case Actions.NCO_AUTH_UPDATE_STATUS:
-            return state.set(action.payload);
+            return state.merge(action.payload);
         }
 
         return state;

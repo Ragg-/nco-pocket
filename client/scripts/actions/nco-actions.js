@@ -70,8 +70,8 @@ export default {
     async ncoAuthRequest({email, password})
     {
         const formData = new FormData();
-        fd.append('email', email);
-        fd.append('password', password);
+        formData.append('email', email);
+        formData.append('password', password);
 
         const response = await (await fetch('/api/auth', {
             method: 'post',

@@ -3,6 +3,7 @@ import {ReduceStore} from 'flux/utils';
 
 import Dispatcher from '../app/dispatcher';
 import Actions from '../const/Actions';
+import LocalStorageKeys from '../const/LocalStorageKeys';
 import defaultSetting from "../app/default-setting";
 
 class PreferenceStore extends ReduceStore

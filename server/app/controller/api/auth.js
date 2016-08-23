@@ -1,7 +1,6 @@
 import * as uuid from 'node-uuid';
 import * as NicoVideoAPI from 'node-nicovideo-api';
 
-
 export default function* auth()
 {
     if (this.method === 'GET' && this.querystring === 'check') {

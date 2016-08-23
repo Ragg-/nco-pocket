@@ -32,7 +32,7 @@ export default class Root extends React.Component
                 <ShellView channel={this.state.preference.nsen.defaultChannel} />
                 <MainView />
                 <ControlView />
-                <LoginView authState={this.state.auth} />
+                <LoginView />
                 <PreferenceView />
             </div>
         );
