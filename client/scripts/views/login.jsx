@@ -18,7 +18,7 @@ export default class ShellView extends React.Component
 
     onChangeChannel(e)
     {
-        NcoActions.nsenChangeChannel({channel: e.target.value});
+        NcoActions.ncoChangeChannel({channel: e.target.value});
     }
 
     render()

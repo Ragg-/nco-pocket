@@ -1,32 +1,44 @@
-import DisposableEmitter from 'utils/emitter';
+import {Dispatcher} from 'flux';
 
 import Actions from '../const/Actions';
 
-function assertEventName(name)
-{
-    if (! Object.values(Actions).includes(name)) {
-        throw new Error(`Action '${name}' does not defined.`);
-    }
-}
+const actionTypes = Object.values(Actions);
+const dispatch = Dispatcher.prototype.dispatch;
 
-export default new class extends DisposableEmitter
-{
-    emit()
-    {
-        throw new Error('Use Dispatcher#dispatch instead of Dispatcher#emit.');
+const dispatcher = new Dispatcher();
+dispatcher.dispatch = function (action) {
+    if (! actionTypes.includes(action.actionType)) {
+        throw new Error(`Action '${action.actionType}' does not defined.`);
     }
 
-    on(event, observer)
-    {
-        assertEventName(event);
-        super.on(event, observer);
-    }
+    dispatch.call(this, action);
+};;
 
-    dispatch(event, payload)
-    {
-        assertEventName(event);
+export default dispatcher;
 
-        console.log("Dispatch event : %s", event, payload);
-        super.emit(event, payload);
-    }
-};
+// function assertEventName(name)
+// {
+
+// }
+//
+// export default new class extends DisposableEmitter
+// {
+//     emit()
+//     {
+//         throw new Error('Use Dispatcher#dispatch instead of Dispatcher#emit.');
+//     }
+//
+//     on(event, observer)
+//     {
+//         assertEventName(event);
+//         super.on(event, observer);
+//     }
+//
+//     dispatch(event, payload)
+//     {
+//         assertEventName(event);
+//
+//         console.log("Dispatch event : %s", event, payload);
+//         super.emit(event, payload);
+//     }
+// };

@@ -20,8 +20,8 @@ export default class Root extends React.Component
             auth: AuthStore.getState(),
         };
 
-        PreferenceStore.observe(() => { this.setState({preference: PreferenceStore.getState()}); });
-        AuthStore.observe(() => { this.setState({auth: AuthStore.getState()}); });
+        PreferenceStore.addListener(() => { this.setState({preference: PreferenceStore.getState()}); });
+        AuthStore.addListener(() => { this.setState({auth: AuthStore.getState()}); });
     }
 
     render()

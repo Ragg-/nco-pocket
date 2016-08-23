@@ -1,68 +1,90 @@
 import Dispatcher from '../app/dispatcher';
-
 import Actions from '../const/Actions';
-
-import AuthStore from '../stores/auth-store';
-import CommentsStore from '../stores/comments-store';
-import PreferenceStore from '../stores/preference-store.js';
 
 export default {
     [Symbol.toStringTag]: 'NcoActionCreators',
 
     /**
-     * @param string payload.channel
+     * @param {string} payload.channel
      */
-    nsenChangeChannel(payload)
+    ncoChangeChannel(payload)
     {
-        Dispatcher.dispatch(Actions.NSEN_CHANGE_CHANNEL, payload);
-    },
-
-    /**
-     * @param string payload.comment
-     * @param boolean payload.anony
-     */
-    nsenSendComment(payload)
-    {
-        Dispatcher.dispatch(Actions.NSEN_SEND_COMMENT, payload);
+        Dispatcher.dispatch({
+            actionType: Actions.NCO_CHANNGE_CHANNEL,
+            payload,
+        });
     },
 
     ncoPreferenceOpen()
     {
-        Dispatcher.dispatch(Actions.NCO_PREFERENCE_OPEN);
+        Dispatcher.dispatch({
+            actionType: Actions.NCO_PREFERENCE_OPEN,
+        });
     },
 
     ncoPreferenceClose()
     {
-        Dispatcher.dispatch(Actions.NCO_PREFERENCE_CLOSE);
+        Dispatcher.dispatch({
+            actionType: Actions.NCO_PREFERENCE_CLOSE,
+        });
     },
 
     /**
-     * @param boolean payload.playerEnabled
+     * @param {Object} options
+     * @param {boolean} options.playerEnabled?
      */
-    ncoUpdatePreference(payload)
+    ncoUpdatePreference(options)
     {
-        Dispatcher.dispatch(Actions.NCO_UPDATE_PREFERENCE, payload);
+        Dispatcher.dispatch({
+            actionType: Actions.NCO_UPDATE_PREFERENCE,
+            payload: options
+        });
     },
 
     /**
-     * @param boolean payload.connected
+     * @param {boolean} payload.connected
      */
     ncoNetworkStateChanged(payload)
     {
-        Dispatcher.dispatch(Actions.NCO_NETWORK_STATE_CHANGED, payload);
+        Dispatcher.dispatch({
+            actionType: Actions.NCO_NETWORK_STATE_CHANGED,
+            payload,
+        });
     },
 
-    ncoAuthCheckAndUpdateStatus()
+    async ncoAuthCheckAndUpdateStatus()
     {
-        Dispatcher.dispatch(Actions.NCO_AUTH_CHECK_AND_UPDATE_STATUS);
+        const response = await (await fetch('/api/auth?check', {method: 'get', credentials: 'same-origin'})).json();
+        Dispatcher.dispatch({
+            actionType: Actions.NCO_AUTH_UPDATE_STATUS,
+            payload: {
+                logged: response.authenticated,
+            },
+        });
     },
 
     /**
-     * @param string payload.email
-     * @param string payload.password
+     * @param {string} payload.email
+     * @param {string} payload.password
      */
-    ncoAuthRequest(payload)
+    async ncoAuthRequest({email, password})
     {
-        Dispatcher.dispatch(Actions.NCO_AUTH_REQUEST, payload);
+        const formData = new FormData();
+        fd.append('email', email);
+        fd.append('password', password);
+
+        const response = await (await fetch('/api/auth', {
+            method: 'post',
+            credentials: 'same-origin',
+            body: formData,
+        })).json();
+
+        Dispatcher.dispatch({
+            actionType: Actions.NCO_AUTH_UPDATE_STATUS,
+            payload: {
+                logged: response.authenticated,
+                failedReason: response.reason,
+            },
+        });
     },
 }

@@ -1,54 +1,46 @@
-import * as _ from 'lodash';
-import * as __ from 'lodash-deep'
-import Emitter from '../utils/emitter';
+import Immutable from 'immutable';
+import {ReduceStore} from 'flux/utils';
 
-import Actions from '../const/Actions';
 import Dispatcher from '../app/dispatcher';
-import LocalStorageKeys from '../const/LocalStorageKeys';
-import DefaultConfig from "../app/default-setting";
+import Actions from '../const/Actions';
+import defaultSetting from "../app/default-setting";
 
-const serial = localStorage.getItem('nco');
-const _store = JSON.parse(serial || JSON.stringify(DefaultConfig));
-const _emitter = new Emitter();
-
-function setState(key, value)
+class PreferenceStore extends ReduceStore
 {
-    Store.assertKey(key);
-    _.set(_store, key, value);
-
-    const serialize = JSON.stringify(_store);
-    localStorage.setItem('nco', serialize);
-    _emitter.emit("change");
-}
-
-export default class Store
-{
-    static init()
+    static init(dispatcher)
     {
-        Dispatcher.on(Actions.NSEN_CHANGE_CHANNEL, ({channel}) => {
-            setState(LocalStorageKeys.NSEN_DEFAULT_CHANNEL, channel);
-        });
+        PreferenceStore.instance = new PreferenceStore(dispatcher);
     }
 
-    static observe(callback)
+    getInitialState()
     {
-        return _emitter.on('change', callback);
+        const Preference = Immutable.Record(defaultSetting);
+
+        const serialized = localStorage.getItem('nco');
+        const store = serialized ? JSON.parse(serialized) : defaultSetting;
+        return new Preference(store);
     }
 
-    static assertKey(key)
+    reduce(state, action)
     {
-        if (! Object.values(LocalStorageKeys).includes(key)) {
-            throw new Error(`Key ${key} does not defined in LocalStorageKeys.`);
-        }
-    }
+        switch (action.actionType) {
+        case Actions.NCO_CHANNGE_CHANNEL:
+            return state.set(LocalStorageKeys.NSEN_DEFAULT_CHANNEL, payload.channel);
 
-    static getState(key)
-    {
-        if (key == null) {
-            return _.cloneDeep(_store);
+        case Actions.NCO_PREFERENCE_SAVE:
+            return state.merge(payload.config);
         }
 
-        Store.assertKey(key);
-        return _.cloneDeep(_.get(_store, key, _store));
+        return state;
+    }
+
+    __emitChange()
+    {
+        super.__emitChange();
+
+        const serialize = JSON.stringify(this.getState().toJS());
+        localStorage.setItem('nco', serialize);
     }
 }
+
+export default new PreferenceStore(Dispatcher);

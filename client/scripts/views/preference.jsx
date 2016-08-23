@@ -19,8 +19,14 @@ export default class ShellView extends React.Component
         super(props);
         this.state = {show: false};
 
-        Dispatcher.on(Actions.NCO_PREFERENCE_OPEN, _ => this.setState({'show': true}));
-        Dispatcher.on(Actions.NCO_PREFERENCE_CLOSE, _ => this.setState({'show': false}));
+        Dispatcher.register(action => {
+            switch (action.actionType) {
+            case Actions.NCO_PREFERENCE_OPEN:
+                return this.setState({'show': true});
+            case Actions.NCO_PREFERENCE_CLOSE:
+                return this.setState({'show': false});
+            }
+        });
     }
 
     componentWillUnmount()

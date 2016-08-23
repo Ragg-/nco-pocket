@@ -12,6 +12,7 @@
     "babel-loader": "^6.2.5",
     "babel-plugin-transform-react-jsx": "^6.8.0",
     "browser-sync": "^2.14.0",
+    "flux": "^2.1.1",
     "gulp": "git://github.com/gulpjs/gulp.git#4.0",
     "gulp-imagemin": "^3.0.3",
     "gulp-load-plugins": "^1.2.4",

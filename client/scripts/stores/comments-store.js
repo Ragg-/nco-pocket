@@ -1,71 +1,30 @@
-import immutable from 'immutable';
-import Emitter from '../utils/emitter';
+import Immutable from 'immutable';
+import {ReduceStore} from 'flux/utils';
 
 import Dispatcher from '../app/dispatcher';
 import Actions from '../const/Actions';
-import SocketMessageTypes from '../../../shared/SocketMessageTypes';
 
-import CommentPayloadStruct from '../structs/comment';
-
-import NcoSessionManager from '../managers/nco-session-manager';
-
-const _emitter = new Emitter();
-let _comments = immutable.List([]);
-
-const CommentUser = immutable.Record({
-    id: null,
-    score: null,
-    accountType: null,
-    isPremium: false,
-    isAnonymous: null,
-});
-const Comment = immutable.Record({
-    threadId: null,
-    date: null,
-    locale: null,
-    command: null,
-    comment: null,
-    isMyPost: null,
-    user: CommentUser(),
-});
-
-function transformComment(payload) {
-    return {
-        isControl: payload.is
-    }
-    // return comment.set('comment', comment.comment.replace(/(https?:\/\/[^\s　<>]+)/g, '<a href='$&'>$&</a>'))
-}
-
-export default class CommentsStore
+class CommentsStore extends ReduceStore
 {
-    static init()
+    static init(dispatcher)
     {
-        NcoSessionManager.socket.on(SocketMessageTypes.SOCKET_RECEIVE_COMMENT, payload => {
-            payload.user = CommentUser(payload.user);
-
-            const comment = Comment(payload);
-            _comments = _comments.push(comment);
-            console.log(_comments);
-            _emitter.emit('change');
-        });
-
-        Dispatcher.on(Actions.NSEN_SEND_COMMENT, payload => {
-            NcoSessionManager.socket.emit(SocketMessageTypes.SOCKET_NSEN_SEND_COMMENT, payload);
-        });
-
-        Dispatcher.on(Actions.NSEN_CHANGE_CHANNEL, payload => {
-            _comments = _comments.clear();
-            _emitter.emit('change');
-        });
+        CommentsStore.instance = new CommentsStore(dispatcher);
     }
 
-    static observe(callback)
+    getInitialState()
     {
-        return _emitter.on('change', callback);
+        return Immutable.List([]);
     }
 
-    static getComments()
+    reduce(state, action)
     {
-        return _comments;
+        switch (action.actionType) {
+        case Actions.NCO_CHANNGE_CHANNEL:
+            return state.clear();
+        }
+
+        return state;
     }
 }
+
+export default new CommentsStore(Dispatcher);

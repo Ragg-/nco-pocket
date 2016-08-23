@@ -36,11 +36,6 @@ window.Promise.defer = () => {
 // window.$ = window.jQuery = jQuery;
 
 document.addEventListener('DOMContentLoaded', () => {
-    PreferenceStore.init();
-    AuthStore.init();
-    CommentsStore.init();
-
     setTimeout(() => NcoActions.ncoAuthCheckAndUpdateStatus(), 200);
-
     ReactDOM.render(<RootView />, document.querySelector('#nco-root'));
 });
