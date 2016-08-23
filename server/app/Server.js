@@ -14,7 +14,7 @@ import * as fs from 'fs';
 import * as Nico from 'node-nicovideo-api';
 import * as path from 'path';
 
-import SocketMessageTypes from '../../shared/SocketMessageTypes';
+import SocketEventTypes from '../../shared/SocketEventTypes';
 
 export default class Server
 {
@@ -45,8 +45,8 @@ export default class Server
             console.log('\u001b[36mClient \u001b[31mdisconnected.\u001b[m');
         });
 
-        koa.io.route(SocketMessageTypes.HANDSHAKE, function* () {
-            this.emit(SocketMessageTypes.NCO_HANDSHAKE_RESPONSE, {});
+        koa.io.route(SocketEventTypes.HANDSHAKE, function* () {
+            this.emit(SocketEventTypes.NCO_HANDSHAKE_RESPONSE, {});
         });
 
         koa.listen(config.port);
