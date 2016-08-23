@@ -1,7 +1,6 @@
 import React from 'react';
 
-import Actions from "../const/Actions";
-import Dispatcher from '../app/dispatcher';
+import NcoActions from '../actions/nco-actions';
 
 import ControlCommentView from './control-comment';
 import ControlRequestView from "./control-request";
@@ -32,7 +31,7 @@ export default class ControlView extends React.Component
                         }
                         <button className="NcoControl_actions_btn reload fa fa-refresh" title="リロード"></button>
                         <button className="NcoControl_actions_btn preference fa fa-cog" title="設定"
-                            onTouchEnd={e => Dispatcher.dispatch(Actions.NCO_PREFERENCE_OPEN)}></button>
+                            onTouchEnd={e => NcoActions.ncoPreferenceOpen()}></button>
                         <button className="NcoControl_actions_btn play fa fa-play" title="再生"></button>
                     </div>
                 </div>

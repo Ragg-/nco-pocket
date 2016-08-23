@@ -1,8 +1,10 @@
+import NcoActions from '../../actions/nco-actions';
+
 // TODO
 window.addEventListener('online', () => {
-    Dispatcher.dispatch(Actions.NCO_NETWORK_STATE_CHANGED, {connected: true});
+    NcoActions.ncoNetworkStateChanged({connected: true});
 });
 
 window.addEventListener('offline', () => {
-    Dispatcher.dispatch(Actions.NCO_NETWORK_STATE_CHANGED, {connected: false});
+    NcoActions.ncoNetworkStateChanged({connected: false});
 });

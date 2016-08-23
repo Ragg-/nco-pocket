@@ -9,8 +9,7 @@ import 'thirdparty/jquery.powertip';
 import 'fetch';
 import 'es6-collections';
 
-import Dispatcher from './app/dispatcher.js';
-import Actions from './const/Actions';
+import NcoActions from './actions/nco-actions';
 import NcoSessionManager from './managers/nco-session-manager';
 
 import PreferenceStore from './stores/preference-store';
@@ -19,7 +18,6 @@ import CommentsStore from './stores/comments-store';
 
 import RootView from './views/root';
 
-window.app = {Dispatcher, PreferenceStore};
 window.Promise || (window.Promise = Promise);
 window.Promise.defer = () => {
     const defer = {};
@@ -38,11 +36,11 @@ window.Promise.defer = () => {
 // window.$ = window.jQuery = jQuery;
 
 document.addEventListener('DOMContentLoaded', () => {
-    PreferenceStore.init(Dispatcher);
-    AuthStore.init(Dispatcher);
+    PreferenceStore.init();
+    AuthStore.init();
     CommentsStore.init();
 
-    setTimeout(() => Dispatcher.dispatch(Actions.NCO_REQUEST_CHECK_AND_UPDATE_AUTH_STATUS), 200);
+    setTimeout(() => NcoActions.ncoAuthCheckAndUpdateStatus(), 200);
 
     ReactDOM.render(<RootView />, document.querySelector('#nco-root'));
 });

@@ -1,8 +1,10 @@
 import React from 'react';
 import classname from "classname";
 
-import Actions from "../const/Actions";
-import Dispatcher from "../app/dispatcher";
+import Dispatcher from '../app/dispatcher';
+import Actions from '../const/Actions';
+
+import NcoActions from '../actions/nco-actions';
 
 export default class ShellView extends React.Component
 {
@@ -31,7 +33,7 @@ export default class ShellView extends React.Component
         e.preventDefault();
         e.stopPropagation();
 
-        Dispatcher.dispatch(Actions.NCO_SAVE_PREFERENCE, {playerEnabled: this.refs.playerEnabled.checked});
+        NcoActions.ncoSavePreference({playerEnabled: this.refs.playerEnabled.checked});
         this.setState({'show': false});
     }
 

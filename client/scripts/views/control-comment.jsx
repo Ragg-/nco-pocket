@@ -1,8 +1,7 @@
-import React from "react";
-import classname from "classname";
+import React from 'react';
+import classname from 'classname';
 
-import Dispatcher from '../app/dispatcher';
-import Actions from '../const/Actions';
+import NcoActions from '../actions/nco-actions';
 
 export default class ControlCommentView extends React.Component
 {
@@ -24,7 +23,7 @@ export default class ControlCommentView extends React.Component
         e.preventDefault();
         e.stopPropagation();
 
-        Dispatcher.dispatch(Actions.NSEN_SEND_COMMENT, {
+        NcoActions.nsenSendComment({
             comment: this.refs.comment.value,
             anony: this.refs.anony.checked,
         });

@@ -1,7 +1,6 @@
 import React from 'react';
 
-import Dispatcher from "../app/dispatcher";
-import Actions from "../const/Actions";
+import NcoActions from '../actions/nco-actions';
 import NsenChannels from '../../../shared/NsenChannels';
 
 export default class ShellView extends React.Component
@@ -17,7 +16,7 @@ export default class ShellView extends React.Component
 
     onChangeChannel(e)
     {
-        Dispatcher.dispatch(Actions.NSEN_CHANGE_CHANNEL, {channel: e.target.value});
+        NcoActions.nsenChangeChannel({channel: e.target.value});
     }
 
     render()

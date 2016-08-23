@@ -3,6 +3,7 @@ import * as __ from 'lodash-deep'
 import Emitter from '../utils/emitter';
 
 import Actions from '../const/Actions';
+import Dispatcher from '../app/dispatcher';
 import LocalStorageKeys from '../const/LocalStorageKeys';
 import DefaultConfig from "../app/default-setting";
 
@@ -22,9 +23,9 @@ function setState(key, value)
 
 export default class Store
 {
-    static init(dispatcher)
+    static init()
     {
-        dispatcher.on(Actions.NSEN_CHANGE_CHANNEL, ({channel}) => {
+        Dispatcher.on(Actions.NSEN_CHANGE_CHANNEL, ({channel}) => {
             setState(LocalStorageKeys.NSEN_DEFAULT_CHANNEL, channel);
         });
     }

@@ -5,7 +5,7 @@ import Emitter from '../utils/emitter';
 import Dispatcher from '../app/dispatcher';
 import Actions from '../const/Actions';
 
-const ACCEPTED_KEYS = ['logged'];
+const ACCEPTED_KEYS = ['logged', 'success'];
 const _store = {logged: false};
 const _emitter = new Emitter();
 
@@ -20,12 +20,12 @@ export default class AuthStore
 {
     static init()
     {
-        Dispatcher.on(Actions.NCO_REQUEST_CHECK_AND_UPDATE_AUTH_STATUS, async () => {
+        Dispatcher.on(Actions.NCO_AUTH_CHECK_AND_UPDATE_STATUS, async () => {
             const response = await (await fetch('/api/auth?check', {method: 'get', credentials: 'same-origin'})).json();
             setState('logged', response.authenticated);
         });
 
-        Dispatcher.on(Actions.NCO_REQUEST_AUTHENTICATION, async ({email, password}) => {
+        Dispatcher.on(Actions.NCO_AUTH_REQUEST, async ({email, password}) => {
             const formData = Object.entries({email, password})
                 .reduce((fd, entry) => { fd.append(entry[0], entry[1]); return fd; }, new FormData());
 
@@ -36,7 +36,9 @@ export default class AuthStore
             })).json();
 
             if (response.authenticated === false) {
-                Dispatcher.dispatch(Actions.NCO_AUTHENTICATION_FAILED);
+                setState('success',false);
+                setState('logged', false);
+                return;
             }
 
             setState('logged', response.authenticated);
