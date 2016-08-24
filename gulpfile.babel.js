@@ -104,7 +104,7 @@ export function runBrowserSync(cb) {
     cb();
 }
 
-const self_watch = g.series(runBrowserSync, (cb) => {
+const self_watch = g.series(runBrowserSync, function selfWatch(cb) {
     var command, args, proc;
 
     if (/^win/.test(process.platform)) {
