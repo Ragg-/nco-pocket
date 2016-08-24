@@ -4,9 +4,9 @@ const option  = require('./gulp');
 
 module.exports = {
     watch: true,
-    entry: {
-        nco: 'nco'
-    },
+    // entry: {
+    //     nco: 'nco'
+    // },
     output: {
         path: path.join(option.publishDir, 'js'),
         filename: '[name].js',
