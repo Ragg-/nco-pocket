@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const option  = require('./gulp');
 
 module.exports = {
+    watch: true,
     entry: {
         nco: 'nco'
     },
