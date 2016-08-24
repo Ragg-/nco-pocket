@@ -24,11 +24,15 @@ function* authCheck() {
 }
 
 function* authAuthenticate() {
-    let nicoSession;
+    const nicoSession = {};
     const {email, password} = this.request.fields;
 
     try {
-        nicoSession = yield NicoVideoAPI.login(email, password);
+        let session = nicoSession.session = yield NicoVideoAPI.login(email, password);
+        nicoSession.channel = yield session.live.getNsenChannelHandlerFor('nsen/toho', {
+            connect: true,
+            firstGetComments: 200,
+        });
     } catch (e) {
         this.body = {authenticated: false};
         return;

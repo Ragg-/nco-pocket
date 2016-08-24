@@ -2,6 +2,7 @@ import React from 'react';
 import classname from 'classname';
 
 import NcoActions from '../actions/nco-actions';
+import NsenActionCreators from '../actions/nsen-actions';
 
 export default class ControlCommentView extends React.Component
 {
@@ -9,7 +10,7 @@ export default class ControlCommentView extends React.Component
     {
         super(props);
         this.state = {
-            focus: false
+            focus: false,
         };
     }
 
@@ -23,10 +24,12 @@ export default class ControlCommentView extends React.Component
         e.preventDefault();
         e.stopPropagation();
 
-        NcoActions.nsenSendComment({
+        NsenActionCreators.nsenSendComment({
             comment: this.refs.comment.value,
             anony: this.refs.anony.checked,
         });
+
+        this.refs.comment.value = '';
     }
 
     render()
@@ -43,9 +46,7 @@ export default class ControlCommentView extends React.Component
 
                 <input ref="comment" className="NcoControl_comment_input"
                     placeholder="コメント"
-                    onFocus={e => this.setState({focus: true})}
-                    onBlur={e => this.setState({focus: false})}
-                    />
+                />
             </form>
         );
     }

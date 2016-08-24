@@ -1,6 +1,9 @@
 import Dispatcher from '../app/dispatcher';
 import Actions from '../const/Actions';
 
+import NcoSessionManager from '../managers/nco-session-manager';
+import SocketEventTypes from '../../../shared/SocketEventTypes';
+
 export default {
     [Symbol.toStringTag]: 'NcoActionCreators',
 
@@ -78,6 +81,8 @@ export default {
             credentials: 'same-origin',
             body: formData,
         })).json();
+
+        NcoSessionManager.socket.emit(SocketEventTypes.NCO_HANDSHAKE);
 
         Dispatcher.dispatch({
             actionType: Actions.NCO_AUTH_UPDATE_STATUS,

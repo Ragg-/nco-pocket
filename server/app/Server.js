@@ -29,23 +29,31 @@ export default class Server
         koa.use(koaBodyParser({fields: true}));
         koa.use(koaStatic(path.join(__dirname, '../../tmp/client/')));
         koa.use(koaGenericSession({store: koaSessionRedisStore()}));
+        koa.use(function* (next) {
+            this.nicoSession = app.sessionStore[this.cookies.get('nco-authenticate-id')];
+            yield* next;
+        });
 
         // Handle stream access
-        koa.use(koaRoute.get('/stream/:channel',               require('./controller/stream')));
-        koa.use(koaRoute.get('/api/auth',                      require('./controller/api/auth')));
-        koa.use(koaRoute.post('/api/auth',                     require('./controller/api/auth')));
-        koa.use(koaRoute.get('/api/mylist-index',              require('./controller/api/mylist-index')));
-        koa.use(koaRoute.get('/api/mylist-items/:mylistId',    require('./controller/api/mylist-items')));
-        koa.use(koaRoute.get('/api/user/:userId',              require('./controller/api/user')));
+        koa.use(koaRoute.get('/stream/:channel',                require('./controller/stream')));
+        koa.use(koaRoute.get('/api/auth',                       require('./controller/api/auth')));
+        koa.use(koaRoute.post('/api/auth',                      require('./controller/api/auth')));
+        koa.use(koaRoute.get('/api/mylist-index',               require('./controller/api/mylist-index')));
+        koa.use(koaRoute.get('/api/mylist-items/:mylistId',     require('./controller/api/mylist-items')));
+        koa.use(koaRoute.post('/api/nsen/comment',              require('./controller/api/nsen/comment')));
+        koa.use(koaRoute.get('/api/user/:userId',               require('./controller/api/user')));
 
         koa.io.use(function* (next) {
             console.log('\u001b[36mNew client \u001b[32mconnected\u001b[m');
-            this.cookies.set('session-id', this.id);
             yield* next;
             console.log('\u001b[36mClient \u001b[31mdisconnected.\u001b[m');
         });
 
         koa.io.route(SocketEventTypes.HANDSHAKE, function* () {
+            const nicoSession = app.sessionStore[this.cookies.get('nco-authenticate-id')];
+            if (!nicoSession) { return; }
+
+            nicoSession.socket = this;
             this.emit(SocketEventTypes.NCO_HANDSHAKE_RESPONSE, {});
         });
 

@@ -1,5 +1,7 @@
 import Dispatcher from '../app/dispatcher';
 import Actions from '../const/Actions';
+
+import NcoSessionManager from '../managers/nco-session-manager';
 import SocketEventTypes from '../../../shared/SocketEventTypes';
 
 // const CommentUser = Immutable.Record({
