@@ -1,7 +1,7 @@
 import 'babel-polyfill';
 import * as _ from "lodash";
 import * as yargs from "yargs";
-import Server from "./app/Server";
+import Server from "./app/server";
 
 yargs.string("port")
         .alias("port", "p")
