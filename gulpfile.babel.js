@@ -91,16 +91,16 @@ export function run() {
 };
 
 export function runBrowserSync(cb) {
-    bs({
-        port: 3000,
-        open: false,
-        notify: false,
-        files: option.publishDir + "/**",
-        index: "index.html",
-        server: {
-            baseDir: option.publishDir
-        }
-    });
+    // bs({
+    //     port: 3000,
+    //     open: false,
+    //     notify: false,
+    //     files: option.publishDir + "/**",
+    //     index: "index.html",
+    //     server: {
+    //         baseDir: option.publishDir
+    //     }
+    // });
     cb();
 }
 
