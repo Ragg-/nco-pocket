@@ -49,13 +49,7 @@ export default class Server
             console.log('\u001b[36mClient \u001b[31mdisconnected.\u001b[m');
         });
 
-        koa.io.route(SocketEventTypes.HANDSHAKE, function* () {
-            const nicoSession = app.sessionStore[this.cookies.get('nco-authenticate-id')];
-            if (!nicoSession) { return; }
-
-            nicoSession.socket = this;
-            this.emit(SocketEventTypes.NCO_HANDSHAKE_RESPONSE, {});
-        });
+        koa.io.route(SocketEventTypes.HANDSHAKE,            require("./socket-handlers/handshake"));
 
         koa.listen(config.port);
         console.log(`\u001b[36mServer listen on ${config.port}\u001b[m`);
