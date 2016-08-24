@@ -35,7 +35,7 @@ class PreferenceStore extends ReduceStore
     {
         super.__emitChange(payload);
 
-        const serialized = JSON.stringify(this.getState().toJS());
+        const serialized = JSON.stringify(this.getState());
         localStorage.setItem('nco', serialized);
     }
 }

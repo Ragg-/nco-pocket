@@ -21,6 +21,8 @@ class CommentsStore extends ReduceStore
         switch (action.actionType) {
         case Actions.NCO_CHANNGE_CHANNEL:
             return state.clear();
+        case Actions.NSEN_RECEIVE_COMMENT:
+            return state.push(action.payload.comment);
         }
 
         return state;

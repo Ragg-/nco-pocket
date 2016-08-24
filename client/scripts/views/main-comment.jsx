@@ -9,7 +9,9 @@ export default class MainView extends React.Component
     {
         super(props);
         this.state = {comments: CommentsStore.getState()};
-        CommentsStore.addListener(() => this.setState({comments: CommentsStore.getState()}));
+        CommentsStore.addListener(() => this.setState({
+            comments: CommentsStore.getState()
+        }));
     }
 
     render()

@@ -14,6 +14,7 @@ import * as fs from 'fs';
 import * as Nico from 'node-nicovideo-api';
 import * as path from 'path';
 
+import NsenChannelToSocketConnector from './utils/nsen-channel-to-socket-connector';
 import SocketEventTypes from '../../shared/SocketEventTypes';
 
 export default class Server
@@ -41,11 +42,13 @@ export default class Server
         koa.use(koaRoute.get('/api/mylist-index',               require('./controller/api/mylist-index')));
         koa.use(koaRoute.get('/api/mylist-items/:mylistId',     require('./controller/api/mylist-items')));
         koa.use(koaRoute.post('/api/nsen/comment',              require('./controller/api/nsen/comment')));
+        koa.use(koaRoute.get('/api/nsen/change-channel',        require('./controller/api/nsen/change-channel')));
         koa.use(koaRoute.get('/api/user/:userId',               require('./controller/api/user')));
 
         koa.io.use(function* (next) {
             console.log('\u001b[36mNew client \u001b[32mconnected\u001b[m');
             yield* next;
+            NsenChannelToSocketConnector.disconnect(this);
             console.log('\u001b[36mClient \u001b[31mdisconnected.\u001b[m');
         });
 

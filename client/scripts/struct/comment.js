@@ -1,68 +1,67 @@
 import * as _ from "lodash";
-import deepFreeze from "deep-freeze";
 
-const AccountTypes = deepFreeze({
+export const AccountTypes = {
     GENERAL: 0,
     PREMIUM: 1,
     DISTRIBUTOR: 3,
     ADMIN: 6
-});
+};
 
-export {AccountTypes};
-
-export default class CommentWrapper
+export default class Comment
 {
-    static wrap(commentPayload)
+    static fromJSON(comment)
     {
-        return new CommentWrapper(commentPayload._attr);
+        return new Comment(comment);
     }
 
     constructor(_attr)
     {
         this._attr = _attr;
-        Object.defineProperties(this, {
-            command: {
-                value: this.get("command")
-            },
-            comment: {
-                value: this.get("comment")
-            }
-        });
     }
 
     get(path)
     {
-        return _.deepGet(this._attr, path);
+        return _.get(this._attr, path);
     }
 
-    isNormalComment()
+    get comment()
+    {
+        return this.get('comment');
+    }
+
+    get command()
+    {
+        return this.get('command');
+    }
+
+    get isNormalComment()
     {
         return !(this.isControlComment() && this.isPostByDistributor());
     }
 
-    isControlComment()
+    get isControlComment()
     {
         const userId = this.get("user.id");
         const accountType = this.get("user.accountType");
-        return (userid === 900000000) || (accountType === CommentWrapper.AccountTypes.ADMIN);
+        return (userid === 900000000) || (accountType === AccountTypes.ADMIN);
     }
 
-    isPostByDistributor()
+    get isPostByDistributor()
     {
-        return this.get("user.accountType") === CommentWrapper.AccountTypes.DISTRIBUTOR;
+        return this.get("user.accountType") === AccountTypes.DISTRIBUTOR;
     }
 
-    isPostBySelf()
+    get isPostBySelf()
     {
         return this.get("isMyPost");
     }
 
-    isPostByAnonymous()
+    get isPostByAnonymous()
     {
       return this.get("user.isAnonymous");
     }
 
-    isPostByPremiumUser()
+    get isPostByPremiumUser()
     {
         return this.get("user.isPremium");
     }

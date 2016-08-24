@@ -9,8 +9,10 @@ import 'thirdparty/jquery.powertip';
 import 'fetch';
 import 'es6-collections';
 
-import NcoActions from './actions/nco-actions';
 import NcoSessionManager from './managers/nco-session-manager';
+
+import NcoActions from './actions/nco-actions';
+import NsenActions from './actions/nsen-actions';
 
 import PreferenceStore from './stores/preference-store';
 import AuthStore from './stores/auth-store';
@@ -36,6 +38,7 @@ window.Promise.defer = () => {
 // window.$ = window.jQuery = jQuery;
 
 document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => NcoActions.ncoAuthCheckAndUpdateStatus(), 200);
+    NsenActions.attachSocket(NcoSessionManager.socket);
     ReactDOM.render(<RootView />, document.querySelector('#nco-root'));
+    setTimeout(() => NcoActions.ncoAuthCheckAndUpdateStatus(), 200);
 });

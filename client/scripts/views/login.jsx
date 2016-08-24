@@ -1,7 +1,9 @@
+import _ from 'lodash';
 import React from 'react';
 import className from 'classname';
 
 import AuthStore from '../stores/auth-store';
+import PreferenceStore from '../stores/preference-store';
 import NcoActions from '../actions/nco-actions';
 
 export default class LoginView extends React.Component
@@ -42,6 +44,7 @@ export default class LoginView extends React.Component
         NcoActions.ncoAuthRequest({
             email: this.refs.email.value,
             password: this.refs.password.value,
+            channel: _.get(PreferenceStore.getState(), 'defaultChannel'),
         });
     }
 

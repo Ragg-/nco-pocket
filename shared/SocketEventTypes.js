@@ -11,4 +11,6 @@ export default {
 
     // @param NicoLiveComment
     SOCKET_RECEIVE_COMMENT: 'nsen:receive-comment',
+    SOCKET_RECEIVE_GOOD: 'nsen:receive-good',
+    SOCKET_RECEIVE_ADD_MYLIST: 'nsen:receive-add-mylist',
 };

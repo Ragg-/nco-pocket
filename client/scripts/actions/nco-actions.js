@@ -1,3 +1,5 @@
+import querystring from 'querystring';
+
 import Dispatcher from '../app/dispatcher';
 import Actions from '../const/Actions';
 
@@ -10,8 +12,14 @@ export default {
     /**
      * @param {string} payload.channel
      */
-    ncoChangeChannel(payload)
+    async ncoChangeChannel(payload)
     {
+        const query = querystring.stringify({channel: payload.channel});
+        const response = await (await fetch(`/api/nsen/change-channel?${query}`, {
+            method: 'get',
+            credentials: 'same-origin'
+        })).json();
+
         Dispatcher.dispatch({
             actionType: Actions.NCO_CHANNGE_CHANNEL,
             payload,
@@ -58,6 +66,11 @@ export default {
     async ncoAuthCheckAndUpdateStatus()
     {
         const response = await (await fetch('/api/auth?check', {method: 'get', credentials: 'same-origin'})).json();
+
+        if (response.authenticated) {
+            NcoSessionManager.socket.emit(SocketEventTypes.NCO_HANDSHAKE);
+        }
+
         Dispatcher.dispatch({
             actionType: Actions.NCO_AUTH_UPDATE_STATUS,
             payload: {
@@ -70,11 +83,12 @@ export default {
      * @param {string} payload.email
      * @param {string} payload.password
      */
-    async ncoAuthRequest({email, password})
+    async ncoAuthRequest({email, password, channel})
     {
         const formData = new FormData();
         formData.append('email', email);
         formData.append('password', password);
+        formData.append('channel', channel);
 
         const response = await (await fetch('/api/auth', {
             method: 'post',
@@ -82,7 +96,11 @@ export default {
             body: formData,
         })).json();
 
-        NcoSessionManager.socket.emit(SocketEventTypes.NCO_HANDSHAKE);
+        if (response.authenticated) {
+            NcoSessionManager.socket.emit(SocketEventTypes.NCO_HANDSHAKE, {
+                authenticateId: response.authenticateId
+            });
+        }
 
         Dispatcher.dispatch({
             actionType: Actions.NCO_AUTH_UPDATE_STATUS,

@@ -1,8 +1,7 @@
 import io from 'thirdparty/socket.io';
-window.io = io;
 import SocketEventTypes from '../../../shared/SocketEventTypes';
 const _messageTypes = Object.values(SocketEventTypes).concat([
-    'connect', 'error', 'disconnect', 'reconnect', 'reconnect_attempt',
+    'connect', 'connect_error', 'error', 'disconnect', 'reconnect', 'reconnect_attempt',
     'reconnecting', 'reconnect_error', 'reconnect_failed',
 ]);
 

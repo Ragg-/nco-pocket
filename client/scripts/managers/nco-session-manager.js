@@ -10,12 +10,6 @@ export default new class NcoSessionManager
 {
     constructor() {
         window.socket = this._socket = SocketAssertionWrapper.wrap(io(`ws://${location.host}`));
-
-        this.socket.once(SocketEventTypes.NCO_HANDSHAKE_RESPONSE, payload => {
-            return;
-        });
-
-        this.socket.emit(SocketEventTypes.NCO_HANDSHAKE);
     }
 
     get socket()
