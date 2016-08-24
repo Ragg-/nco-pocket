@@ -33,32 +33,32 @@ export function runWebpack(done) {
 };
 
 export function vendor_js() {
-    return g.src(buildPath("vendor_js", ".js"))
+    return g.src(buildPath("vendor_js", ".js"), {since: g.lastRun('vendor_js')})
         .pipe($.plumber())
         .pipe(g.dest(option.publishDir + "/" + option.js.vendorJsDir + "/"));
 };
 
 export function fonts_copy() {
-    return g.src(buildPath("fonts", ".{ttf,otf,eot,woff,svg}"))
+    return g.src(buildPath("fonts", ".{ttf,otf,eot,woff,svg}"), {since: g.lastRun('fonts_copy')})
         .pipe($.plumber())
         .pipe(g.dest(option.publishDir + "/fonts/"));
 };
 
 export function css_copy() {
-    return g.src(buildPath("style", ".css"))
+    return g.src(buildPath("style", ".css"), {since: g.lastRun('css_copy')})
         .pipe($.plumber())
         .pipe(g.dest(option.publishDir + "/css/"));
 };
 
 export function stylus() {
-    return g.src(buildPath("style", ".styl"))
+    return g.src(buildPath("style", ".styl"), {since: g.lastRun('stylus')})
         .pipe($.plumber())
         .pipe($.stylus(require("./gulp_config/stylus")))
         .pipe(g.dest(option.publishDir + "/css/"));
 };
 
 export function pug() {
-    return g.src(buildPath("", "pug", ["!" + option.sourceDir + "/scripts/**/*.pug"]))
+    return g.src(buildPath("", "pug", ["!" + option.sourceDir + "/scripts/**/*.pug"]), {since: g.lastRun('pug')})
         .pipe($.plumber())
         .pipe($.pug())
         .pipe($.prettify())
@@ -66,7 +66,7 @@ export function pug() {
 };
 
 export function images() {
-    return g.src(buildPath("img", ".{png,jpg,jpeg,gif}"))
+    return g.src(buildPath("img", ".{png,jpg,jpeg,gif}"), {since: g.lastRun('images')})
         .pipe($.imagemin(require("./gulp_config/imagemin")))
         .pipe(g.dest(option.publishDir + "/img/"));
 };
