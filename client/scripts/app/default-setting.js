@@ -1,6 +1,4 @@
 export default {
-    nsen: {
-        defaultChannel: "nsen/vocaloid",
-    },
+    defaultChannel: "nsen/vocaloid",
     playerEnabled: true,
 };

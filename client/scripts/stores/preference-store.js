@@ -8,39 +8,35 @@ import defaultSetting from "../app/default-setting";
 
 class PreferenceStore extends ReduceStore
 {
-    static init(dispatcher)
-    {
-        PreferenceStore.instance = new PreferenceStore(dispatcher);
-    }
 
     getInitialState()
     {
-        const Preference = Immutable.Record(defaultSetting);
-
         const serialized = localStorage.getItem('nco');
         const store = serialized ? JSON.parse(serialized) : defaultSetting;
-        return new Preference(store);
+        return store;
     }
 
     reduce(state, action)
     {
         switch (action.actionType) {
         case Actions.NCO_CHANNGE_CHANNEL:
-            return state.set(LocalStorageKeys.NSEN_DEFAULT_CHANNEL, payload.channel);
+            return Object.assign({}, state, {
+                defaultChannel: action.payload.channel,
+            });
 
         case Actions.NCO_PREFERENCE_SAVE:
-            return state.merge(payload.config);
+            return Object.assign({}, state, action.payload.config);
         }
 
         return state;
     }
 
-    __emitChange()
+    __emitChange(payload)
     {
-        super.__emitChange();
+        super.__emitChange(payload);
 
-        const serialize = JSON.stringify(this.getState().toJS());
-        localStorage.setItem('nco', serialize);
+        const serialized = JSON.stringify(this.getState().toJS());
+        localStorage.setItem('nco', serialized);
     }
 }
 

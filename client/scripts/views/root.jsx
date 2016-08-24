@@ -29,7 +29,7 @@ export default class Root extends React.Component
         console.log(this.state);
         return (
             <div id="nco-container">
-                <ShellView channel={this.state.preference.nsen.defaultChannel} />
+                <ShellView channel={this.state.preference.defaultChannel} />
                 <MainView />
                 <ControlView />
                 <LoginView />
