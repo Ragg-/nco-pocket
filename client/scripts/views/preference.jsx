@@ -6,7 +6,9 @@ import Actions from '../const/Actions';
 
 import NcoActions from '../actions/nco-actions';
 
-export default class ShellView extends React.Component
+import fastTouch from '../utils/fast-touch';
+
+export default class PreferenceView extends React.Component
 {
     static propTypes = {
         nsenConfig: React.PropTypes.shape({
@@ -29,17 +31,17 @@ export default class ShellView extends React.Component
         });
     }
 
-    componentWillUnmount()
+    closePreference(e)
     {
-        console.log("ｱｯ!!!");
+        e.preventDefault();
+        this.setState({'show': false});
     }
 
     savePreference(e)
     {
         e.preventDefault();
-        e.stopPropagation();
 
-        NcoActions.ncoSavePreference({playerEnabled: this.refs.playerEnabled.checked});
+        NcoActions.ncoPreferenceSave({playerEnabled: this.refs.playerEnabled.checked});
         this.setState({'show': false});
     }
 
@@ -49,7 +51,7 @@ export default class ShellView extends React.Component
             <div id="nco-preference">
                 <div className={classname("NcoPref", {show: this.state.show})}>
                     <div className="NcoPref_backface">
-                        <form onSubmit={e => this.savePreference(e)} className="NcoPref_modal">
+                        <div className="NcoPref_modal">
                             <h1>設定</h1>
 
                             <div className="NcoPref_section">
@@ -94,10 +96,10 @@ export default class ShellView extends React.Component
                             </div>
 
                             <div className="NcoPref_modal_footer">
-                                <button className="NcoPref_form_cancel" type="button">キャンセル</button>
-                                <button className="NcoPref_form_submit">保存</button>
+                                <button className="NcoPref_form_cancel" type="button" {...fastTouch(e => this.closePreference(e))}>キャンセル</button>
+                                <button className="NcoPref_form_submit" {...fastTouch(e => this.savePreference(e))}>保存</button>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>

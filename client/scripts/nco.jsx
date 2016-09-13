@@ -17,6 +17,7 @@ import NsenActions from './actions/nsen-actions';
 import PreferenceStore from './stores/preference-store';
 import AuthStore from './stores/auth-store';
 import CommentsStore from './stores/comments-store';
+import MyListIndexStore from './stores/mylist-index-store';
 
 import RootView from './views/root';
 

@@ -6,14 +6,10 @@ export default class NsenChannelToSocketConnector
 
     static connect(socket, channel)
     {
-        // channel.onDidReceiveComment(comment => {
-        //     socket.emit(SocketEventTypes.SOCKET_RECEIVE_COMMENT, comment);
-        // });
-        channel.onDidReceiveComment(comment => {
-            socket.emit(SocketEventTypes.SOCKET_RECEIVE_COMMENT, comment.get());
-        });
-
         NsenChannelToSocketConnector._disposers.set(socket, [
+            channel.onDidProcessFirstResponse(comments => {
+                // socket.emit(SocketEventTypes.SOCKET_RECEIVE_FIRST_RESPONSE_COMMENTS, comments.map(c => c.get()));
+            }),
             channel.onDidReceiveComment(comment => {
                 socket.emit(SocketEventTypes.SOCKET_RECEIVE_COMMENT, comment.get());
             }),
@@ -30,6 +26,7 @@ export default class NsenChannelToSocketConnector
                 channel = null;
                 socket = null;
             }),
+            {dispose: () => console.log(`${socket.id} session disposed`)}
         ]);
     }
 
@@ -38,6 +35,10 @@ export default class NsenChannelToSocketConnector
         const disposers = NsenChannelToSocketConnector._disposers.get(socket);
 
         if (!disposers) { return; }
-        disposers.forEach(disposer => disposer.dispose());
+        try {
+            disposers.forEach(disposer => disposer.dispose());
+        } catch (e) {
+            throw new Error(`Socket connection dispose failed (${e.message})`);
+        }
     }
 }

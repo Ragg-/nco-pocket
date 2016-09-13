@@ -2,7 +2,7 @@ import g from "gulp";
 import bs from "browser-sync";
 import named from "vinyl-named";
 import {spawn} from "child_process";
-import webpack from "webpack-stream";
+import webpack from "webpack";
 const $ = require("gulp-load-plugins")();
 
 const option = require("./gulp_config/gulp");
@@ -24,12 +24,18 @@ const buildPath = (dir, ext, withinDirs) => {
     ].concat(withinDirs);
 };
 
-export function runWebpack() {
-    return g.src([`${option.sourceDir}/scripts/nco.jsx`])
-        .pipe(named())
-        .pipe(webpack(require("./gulp_config/webpack")))
-        .pipe($.plumber())
-        .pipe(g.dest(`${option.publishDir}/js/`));
+export function runWebpack(done) {
+    // webpack(require("./gulp_config/webpack"), (err, status) => {
+    //     console.log(status);
+        done();
+    //     // if (err || status.compilation)
+    // })
+
+    // return g.src([`${option.sourceDir}/scripts/nco.jsx`])
+    //     .pipe(named())
+    //     .pipe(webpack(require("./gulp_config/webpack")))
+    //     .pipe($.plumber())
+    //     .pipe(g.dest(`${option.publishDir}/js/`));
 };
 
 export function vendor_js() {
@@ -51,7 +57,8 @@ export function css_copy() {
 };
 
 export function stylus() {
-    return g.src(buildPath("style", ".styl"), {since: g.lastRun('stylus')})
+
+    return g.src(buildPath("style", ".styl"))
         .pipe($.plumber())
         .pipe($.stylus(require("./gulp_config/stylus")))
         .pipe(g.dest(option.publishDir + "/css/"));
@@ -76,7 +83,7 @@ export function watch() {
     g.watch(option.sourceDir + "/vendor_js/**/*.js", g.series(vendor_js));
     g.watch(option.sourceDir + "/fonts/**/*.{ttf,otf,eot,woff,svg}", g.series(fonts_copy));
     g.watch(option.sourceDir + "/css/**/*.css", g.series(css_copy));
-    g.watch(option.sourceDir + "/style/**/*.styl", g.series(stylus));
+    g.watch(option.sourceDir + "/style/**/*.styl", stylus);
     g.watch([
         option.sourceDir + "/**/*.pug",
         "!" + option.sourceDir + "/scripts/**/*.pug"
@@ -130,7 +137,7 @@ const self_watch = g.series(runBrowserSync, function selfWatch(cb) {
 const build = g.parallel(runWebpack, stylus, pug, images, fonts_copy, css_copy);
 export {build};
 
-const devel = g.series(build, watch, run);
+const devel = g.series(build, watch);
 export {devel};
 
 export default self_watch;

@@ -10,6 +10,7 @@ export default {
     NCO_HANDSHAKE_RESPONSE: 'nco:handshake-response',
 
     // @param NicoLiveComment
+    SOCKET_RECEIVE_FIRST_RESPONSE_COMMENTS: 'nsen:receive-first-response-comments',
     SOCKET_RECEIVE_COMMENT: 'nsen:receive-comment',
     SOCKET_RECEIVE_GOOD: 'nsen:receive-good',
     SOCKET_RECEIVE_ADD_MYLIST: 'nsen:receive-add-mylist',

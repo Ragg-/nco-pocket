@@ -10,11 +10,18 @@ export default {
 
     attachSocket(socket)
     {
+        socket.on(SocketEventTypes.SOCKET_RECEIVE_FIRST_RESPONSE_COMMENTS, comments => {
+            Dispatcher.dispatch({
+                actionType: Actions.NSEN_RECEIVE_COMMENTS,
+                payload : comments,
+            });
+        });
+
         socket.on(SocketEventTypes.SOCKET_RECEIVE_COMMENT, comment => {
             Dispatcher.dispatch({
-                actionType: Actions.NSEN_RECEIVE_COMMENT,
+                actionType: Actions.NSEN_RECEIVE_COMMENTS,
                 payload: {
-                    comment: Comment.fromJSON(comment),
+                    comments: [Comment.fromJSON(comment)],
                 },
             });
         });

@@ -44,11 +44,44 @@ export default {
      * @param {Object} options
      * @param {boolean} options.playerEnabled?
      */
-    ncoUpdatePreference(options)
+    ncoPreferenceSave(options)
     {
         Dispatcher.dispatch({
-            actionType: Actions.NCO_UPDATE_PREFERENCE,
+            actionType: Actions.NCO_PREFERENCE_SAVE,
             payload: options
+        });
+    },
+
+    async ncoMylistIndexFetch()
+    {
+        Dispatcher.dispatch({actionType: Actions.NCO_MYLIST_FETCH_START});
+
+        const response = await (await fetch('/api/mylist-index', {
+            credentials: 'same-origin',
+        })).json();
+
+        Dispatcher.dispatch({
+            actionType: Actions.NCO_MYLIST_INDEX_FETCHED,
+            payload: {
+                list: response.list
+            },
+        });
+    },
+
+    async ncoMylistItemsFetch(mylistId)
+    {
+        Dispatcher.dispatch({actionType: Actions.NCO_MYLIST_FETCH_START});
+
+        const response = await (await fetch(`/api/mylist-items/${encodeURIComponent(mylistId)}`, {
+            credentials: 'same-origin',
+        })).json();
+
+        Dispatcher.dispatch({
+            actionType: Actions.NCO_MYLIST_ITEMS_FETCHED,
+            payload: {
+                mylistId,
+                items: response.items,
+            },
         });
     },
 
