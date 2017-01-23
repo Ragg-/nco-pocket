@@ -13,7 +13,7 @@
     "babel-loader": "^6.2.5",
     "babel-plugin-transform-react-jsx": "^6.8.0",
     "browser-sync": "^2.14.0",
-    "flux": "^2.1.1",
+    "flux": "^3.1.2",
     "gulp": "git://github.com/gulpjs/gulp.git#4.0",
     "gulp-imagemin": "^3.0.3",
     "gulp-load-plugins": "^1.2.4",
@@ -45,12 +45,12 @@
     "deep-freeze": "0.0.1",
     "disposable-emitter": "^0.3.0",
     "event-kit": "^2.1.0",
-    "eventemitter3": "^1.2.0",
+    "eventemitter3": "^2.0.2",
     "express": "^4.14.0",
     "immutable": "^3.8.1",
     "key-mirror": "^1.0.1",
     "koa": "^1.2.1",
-    "koa-better-body": "^2.0.1",
+    "koa-better-body": "^3.0.2",
     "koa-generic-session": "^1.11.3",
     "koa-redis": "^2.1.2",
     "koa-route": "^2.4.2",
@@ -64,7 +64,7 @@
     "react-dom": "^15.3.1",
     "request-promise": "^4.1.1",
     "socket.io": "^1.4.8",
-    "yargs": "^5.0.0"
+    "yargs": "^6.6.0"
   },
   "repository": {
     "type": "git",
