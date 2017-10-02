@@ -4,7 +4,9 @@
   "description": "Nsen用コメントビューア \"Nco\"のWebアプリ版",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "author": "Ragg",
   "license": "MIT",
@@ -49,10 +51,10 @@
     "express": "^4.14.0",
     "immutable": "^3.8.1",
     "key-mirror": "^1.0.1",
-    "koa": "^1.2.1",
+    "koa": "^2.2.0",
     "koa-better-body": "^2.0.1",
     "koa-generic-session": "^1.11.3",
-    "koa-redis": "^2.1.2",
+    "koa-redis": "^3.0.0",
     "koa-route": "^2.4.2",
     "koa-static": "^2.0.0",
     "koa.io": "0.0.3",
@@ -64,7 +66,8 @@
     "react-dom": "^15.3.1",
     "request-promise": "^4.1.1",
     "socket.io": "^2.0.2",
-    "yargs": "^5.0.0"
+    "yargs": "^5.0.0",
+    "snyk": "^1.41.1"
   },
   "repository": {
     "type": "git",
@@ -73,5 +76,6 @@
   "bugs": {
     "url": "https://github.com/Ragg-/nco-pocket/issues"
   },
-  "homepage": "https://github.com/Ragg-/nco-pocket#readme"
+  "homepage": "https://github.com/Ragg-/nco-pocket#readme",
+  "snyk": true
 }
